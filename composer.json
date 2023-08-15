@@ -1,0 +1,25 @@
+{
+  "name": "nicmaxcarter/settlementtools",
+  "description": "Small library to help process settlement statements",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Nicmaxcarter\\SettlementTools\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Max Carter",
+      "email": "nicmaxcarter@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
+  },
+  "minimum-stability": "stable",
+  "require": {}
+}
