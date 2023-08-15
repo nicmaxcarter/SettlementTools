@@ -4,17 +4,16 @@ namespace Nicmaxcarter\SettlementTools;
 
 class Dates
 {
-    public static function getWeekEndingDates(int $weeks) : Array
+    public static function getWeekEndingDates(int $weeks): array
     {
         // set empty array to house dates
         $weekEndings = [];
 
         $currentDate = false;
 
-        for($i = 0; $i < $weeks; $i++)
-        {
+        for ($i = 0; $i < $weeks; $i++) {
             // the first iteration will fetch the most recent date
-            if(!$currentDate) {
+            if (!$currentDate) {
                 $currentDate = self::recentWeekEnding();
                 $weekEndings[$i] = $currentDate;
                 continue;
@@ -34,7 +33,7 @@ class Dates
     {
         if ($weekEnding instanceof \DateTime) {
             $weekEnding = clone $weekEnding;
-        } else if (!$weekEnding) {
+        } elseif (!$weekEnding) {
             $weekEnding = new \DateTime();
         } else {
             $weekEnding = new \DateTime($weekEnding);
@@ -51,8 +50,7 @@ class Dates
         // sort array by keys
         usort(
             $dates,
-            function ($a, $b)
-            {
+            function ($a, $b) {
                 return $a > $b;
             }
         );
@@ -62,14 +60,13 @@ class Dates
     public static function recentWeekEnding(
         \DateTime $currDate = null,
         \DateTime $lastFriday = null
-    )
-    {
-        if(is_null($currDate)) {
+    ) {
+        if (is_null($currDate)) {
             // current date time
             $currDate = new \DateTime();
         }
 
-        if(is_null($lastFriday)) {
+        if (is_null($lastFriday)) {
             // last friday date time
             $lastFriday = new \DateTime();
             $lastFriday->modify('last friday');
@@ -92,7 +89,7 @@ class Dates
 
     public static function getWeekEndDate($givenDate)
     {
-        if($givenDate === 'last'){
+        if ($givenDate === 'last') {
             return self::recentWeekEnding();
         }
 
@@ -108,7 +105,7 @@ class Dates
     {
         if ($date instanceof \DateTime) {
             $date = clone $date;
-        } else if (!$date) {
+        } elseif (!$date) {
             $date = new \DateTime();
         } else {
             $date = new \DateTime($date);
@@ -130,7 +127,7 @@ class Dates
     {
         if ($date instanceof \DateTime) {
             $date = clone $date;
-        } else if (!$date) {
+        } elseif (!$date) {
             $date = new \DateTime();
         } else {
             $date = new \DateTime($date);
