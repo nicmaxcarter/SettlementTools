@@ -4,32 +4,49 @@ namespace Nicmaxcarter\SettlementTools;
 
 class Dates
 {
-    public static function getWeekEndingDates(int $weeks): array
-    {
+    /**
+     * @return array<Mixed>
+     */
+    public static function getWeekEndingDates(
+        int $weeks,
+        \DateTime $currentDate = null
+    ): array {
+        if (is_null($currentDate)) {
+            $currentDate = new \DateTime();
+        }
+
         // set empty array to house dates
         $weekEndings = [];
 
-        $currentDate = false;
+        $recentWeekEnding = false;
 
         for ($i = 0; $i < $weeks; $i++) {
             // the first iteration will fetch the most recent date
-            if (!$currentDate) {
-                $currentDate = self::recentWeekEnding();
-                $weekEndings[$i] = $currentDate;
+            if (!$recentWeekEnding) {
+                $recentWeekEnding = self::recentWeekEnding($currentDate);
+                $weekEndings[$i] = $recentWeekEnding;
                 continue;
             }
 
-            $time = strtotime($currentDate);
-            $date = strtotime('-7 days', $time);
-            $currentDate = date('Y-m-d', $date);
+            $time = strtotime($recentWeekEnding);
 
-            $weekEndings[$i] = $currentDate;
+            if (!$time) {
+                continue;
+            }
+
+            $date = strtotime('-7 days', $time);
+            $recentWeekEnding = date('Y-m-d', $date);
+
+            $weekEndings[$i] = $recentWeekEnding;
         }
 
         return $weekEndings;
     }
 
-    public static function getDatesForWeekEnding($weekEnding)
+    /**
+     * @return array<string>
+     */
+    public static function getDatesForWeekEnding(string|\DateTime $weekEnding): array
     {
         if ($weekEnding instanceof \DateTime) {
             $weekEnding = clone $weekEnding;
@@ -51,16 +68,21 @@ class Dates
         usort(
             $dates,
             function ($a, $b) {
-                return $a > $b;
+                if ($a > $b) {
+                    return 1;
+                } else {
+                    return -1;
+                }
             }
         );
+
         return $dates;
     }
 
     public static function recentWeekEnding(
         \DateTime $currDate = null,
         \DateTime $lastFriday = null
-    ) {
+    ): string {
         if (is_null($currDate)) {
             // current date time
             $currDate = new \DateTime();
@@ -68,12 +90,9 @@ class Dates
 
         if (is_null($lastFriday)) {
             // last friday date time
-            $lastFriday = new \DateTime();
+            $lastFriday = clone $currDate;
             $lastFriday->modify('last friday');
         }
-
-        $lastFriday->format('Y-m-d');
-        $currDate->format('Y-m-d');
 
         // get difference between the two dates
         $diff = date_diff($currDate, $lastFriday)->days;
@@ -81,27 +100,28 @@ class Dates
         // if the diff is less than 5 (as in, before wednesday)
         if ($diff < 5) {
             // go back to the prior friday
-            $lastFriday->modify('-7 days')->format('Y-m-d');
+            $lastFriday->modify('-7 days');
         }
 
         return $lastFriday->format('Y-m-d');
     }
 
-    public static function getWeekEndDate($givenDate)
+    // when supplied with Y-m-d or Y/m/d
+    // this function should return the date as m/d/Y,
+    // slashes, not dashes
+    public static function getWeekEndText(string $givenDate): string
     {
-        if ($givenDate === 'last') {
-            return self::recentWeekEnding();
+        $time = strtotime($givenDate);
+
+        if ($time === false) {
+            return date('m/d/Y');
         }
 
-        return date('Y-m-d', strtotime($givenDate));
+        return date('m/d/Y', $time);
     }
 
-    public static function getWeekEndText($givenDate)
-    {
-        return date('m/d/Y', strtotime($givenDate));
-    }
-
-    public static function getSampleEndOfWeekDate($date = null)
+    // COME BACK TO THIS
+    public static function getSampleEndOfWeekDate(string|\DateTime $date = null): \DateTime|false
     {
         if ($date instanceof \DateTime) {
             $date = clone $date;
@@ -122,8 +142,8 @@ class Dates
         }
     }
 
-
-    public static function getSampleStartOfWeekDate($date = null)
+    // COME BACK TO THIS
+    public static function getSampleStartOfWeekDate(string|\DateTime $date = null): \DateTime|false
     {
         if ($date instanceof \DateTime) {
             $date = clone $date;
