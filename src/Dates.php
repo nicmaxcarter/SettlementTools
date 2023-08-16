@@ -7,7 +7,7 @@ class Dates
     /**
      * @return array<Mixed>
      */
-    public static function getWeekEndingDates(
+    public static function datesForWeekEnding(
         int $weeks,
         \DateTime $currentDate = null
     ): array {
@@ -43,42 +43,6 @@ class Dates
         return $weekEndings;
     }
 
-    /**
-     * @return array<string>
-     */
-    public static function getDatesForWeekEnding(string|\DateTime $weekEnding): array
-    {
-        if ($weekEnding instanceof \DateTime) {
-            $weekEnding = clone $weekEnding;
-        } elseif (!$weekEnding) {
-            $weekEnding = new \DateTime();
-        } else {
-            $weekEnding = new \DateTime($weekEnding);
-        }
-
-        $weekEnding->setTime(0, 0, 0);
-
-        $dates = [];
-
-        for ($i = 6; $i >= 0; $i--) {
-            $dates[$i] = $weekEnding->format('Y-m-d');
-            $weekEnding->modify('-1 day');
-        }
-        // sort array by keys
-        usort(
-            $dates,
-            function ($a, $b) {
-                if ($a > $b) {
-                    return 1;
-                } else {
-                    return -1;
-                }
-            }
-        );
-
-        return $dates;
-    }
-
     public static function recentWeekEnding(
         \DateTime $currDate = null,
         \DateTime $lastFriday = null
@@ -109,7 +73,7 @@ class Dates
     // when supplied with Y-m-d or Y/m/d
     // this function should return the date as m/d/Y,
     // slashes, not dashes
-    public static function getWeekEndText(string $givenDate): string
+    public static function weekEndText(string $givenDate): string
     {
         $time = strtotime($givenDate);
 
@@ -120,38 +84,11 @@ class Dates
         return date('m/d/Y', $time);
     }
 
-    // COME BACK TO THIS
-    public static function getSampleEndOfWeekDate(string|\DateTime $date = null): \DateTime|false
+    // given string of Y-m-d or Y/m/d
+    // this function returns datetime of the starting saturday
+    public static function weekStartDate(string $date): \DateTime|false
     {
-        if ($date instanceof \DateTime) {
-            $date = clone $date;
-        } elseif (!$date) {
-            $date = new \DateTime();
-        } else {
-            $date = new \DateTime($date);
-        }
-
-        $date->setTime(0, 0, 0);
-
-        if ($date->format('N') == 5) {
-            // If the date is already a Friday, return it as-is
-            return $date;
-        } else {
-            // Otherwise, return the date of the nearest Friday
-            return $date->modify('this Friday');
-        }
-    }
-
-    // COME BACK TO THIS
-    public static function getSampleStartOfWeekDate(string|\DateTime $date = null): \DateTime|false
-    {
-        if ($date instanceof \DateTime) {
-            $date = clone $date;
-        } elseif (!$date) {
-            $date = new \DateTime();
-        } else {
-            $date = new \DateTime($date);
-        }
+        $date = new \DateTime($date);
 
         $date->setTime(0, 0, 0);
 
@@ -160,7 +97,20 @@ class Dates
             return $date;
         } else {
             // Otherwise, return the date of the nearest Friday
-            return $date->modify('this Saturday');
+            return $date->modify('last Saturday');
         }
+    }
+
+    // given string of Y-m-d or Y/m/d
+    // this function returns text date of the starting saturday
+    public static function weekStart(string $date): string|false
+    {
+        $startDate = self::weekStartDate($date);
+
+        if ($startDate === false) {
+            return false;
+        }
+
+        return $startDate->format('Y-m-d');
     }
 }

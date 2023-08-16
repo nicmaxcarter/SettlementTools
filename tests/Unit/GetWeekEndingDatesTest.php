@@ -19,7 +19,7 @@ final class GetWeekEndingDatesTest extends TestCase
         $currentDate = new \DateTime('2023-07-25');
 
         // when the function is called
-        $resultingDates = Dates::getWeekEndingDates($weeks, $currentDate);
+        $resultingDates = Dates::datesForWeekEnding($weeks, $currentDate);
 
         // the function should return this date
         $checkDates = [
@@ -43,7 +43,7 @@ final class GetWeekEndingDatesTest extends TestCase
         $currentDate = new \DateTime('2023-07-26');
 
         // when the function is called
-        $resultingDates = Dates::getWeekEndingDates($weeks, $currentDate);
+        $resultingDates = Dates::datesForWeekEnding($weeks, $currentDate);
 
         // the function should return this date
         $checkDates = [
@@ -68,7 +68,7 @@ final class GetWeekEndingDatesTest extends TestCase
         $currentDate = new \DateTime('2023-07-27');
 
         // when the function is called
-        $resultingDates = Dates::getWeekEndingDates($weeks, $currentDate);
+        $resultingDates = Dates::datesForWeekEnding($weeks, $currentDate);
 
         // the function should return this date
         $checkDates = [
@@ -92,7 +92,7 @@ final class GetWeekEndingDatesTest extends TestCase
         $currentDate = new \DateTime('2023-07-28');
 
         // when the function is called
-        $resultingDates = Dates::getWeekEndingDates($weeks, $currentDate);
+        $resultingDates = Dates::datesForWeekEnding($weeks, $currentDate);
 
         // the function should return this date
         $checkDates = [

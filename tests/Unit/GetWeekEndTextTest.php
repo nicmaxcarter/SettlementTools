@@ -16,7 +16,7 @@ final class GetWeekEndTextTest extends TestCase
         $givenDate = '2022-02-18';
 
         // when the function is called
-        $resultDate = Dates::getWeekEndText($givenDate);
+        $resultDate = Dates::weekEndText($givenDate);
 
         // the function should return this formatted string
         $checkDate = '02/18/2022';
@@ -30,7 +30,7 @@ final class GetWeekEndTextTest extends TestCase
         $givenDate = '2022/02/18';
 
         // when the function is called
-        $resultDate = Dates::getWeekEndText($givenDate);
+        $resultDate = Dates::weekEndText($givenDate);
 
         // the function should return this formatted string
         $checkDate = '02/18/2022';
@@ -44,7 +44,7 @@ final class GetWeekEndTextTest extends TestCase
         $givenDate = '03-02-1995';
 
         // when the function is called
-        $resultDate = Dates::getWeekEndText($givenDate);
+        $resultDate = Dates::weekEndText($givenDate);
 
         // the function should return this formatted string
         $checkDate = '02/03/1995';
@@ -58,7 +58,7 @@ final class GetWeekEndTextTest extends TestCase
         $givenDate = '03/02/1995';
 
         // when the function is called
-        $resultDate = Dates::getWeekEndText($givenDate);
+        $resultDate = Dates::weekEndText($givenDate);
 
         // the function should return this formatted string
         $checkDate = '03/02/1995';
