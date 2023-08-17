@@ -164,4 +164,32 @@ class Dates
 
         return $newDates;
     }
+
+    /**
+     * @return array<Mixed>
+     */
+    // given a valid week ending date, this will return
+    // prior week start and ending including the given date
+    // as Aug 21, 2023
+    public static function priorWeekDatesPretty(
+        string $weekEndingDate,
+        int $numOfWeeks
+    ): array {
+
+        $dates = self::priorWeekDates($weekEndingDate, $numOfWeeks);
+
+        $newDates = [];
+
+        foreach($dates as $week) {
+            $start = new \DateTime($week['start']);
+            $end = new \DateTime($week['end']);
+
+            $newDates[] = [
+                'start' => $start->format('M j, Y'),
+                'end' => $end->format('M j, Y')
+            ];
+        }
+
+        return $newDates;
+    }
 }
