@@ -184,7 +184,7 @@ class Dates
             $start = new \DateTime($week['start']);
             $end = new \DateTime($week['end']);
 
-            $newDates[] = [
+            $newDates[$week['end']] = [
                 'start' => $start->format('M j, Y'),
                 'end' => $end->format('M j, Y')
             ];
