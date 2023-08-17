@@ -113,4 +113,55 @@ class Dates
 
         return $startDate->format('Y-m-d');
     }
+
+    /**
+     * @return array<Mixed>
+     */
+    // given a valid week ending date, this will return
+    // prior week endings including the given date
+    public static function priorWeekEndings(
+        string $weekEndingDate,
+        int $numOfWeeks
+    ): array {
+
+        $dates = [];
+
+        $dates[] = $weekEndingDate;
+        $numOfWeeks--;
+
+        for($i = 0; $i < $numOfWeeks; $i++) {
+            $date = new \DateTime($weekEndingDate);
+            $dates[] = $date->modify('-7 days')->format('Y-m-d');
+            $weekEndingDate = $date->format('Y-m-d');
+        }
+
+        return $dates;
+    }
+
+    /**
+     * @return array<Mixed>
+     */
+    // given a valid week ending date, this will return
+    // prior week start and ending including the given date
+    public static function priorWeekDates(
+        string $weekEndingDate,
+        int $numOfWeeks
+    ): array {
+
+        $dates = self::priorWeekEndings($weekEndingDate, $numOfWeeks);
+
+        $newDates = [];
+
+        foreach($dates as $weekEnd) {
+            $end = $weekEnd;
+            $start = self::weekStart($end);
+
+            $newDates[] = [
+                'start' => $start,
+                'end' => $end
+            ];
+        }
+
+        return $newDates;
+    }
 }
