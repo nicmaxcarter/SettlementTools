@@ -288,4 +288,19 @@ class Dates
 
         return $fridayNumber;
     }
+
+    public static function startOfAPastYear(
+        string $dateStr,
+        int $years = 0
+    ): string {
+
+        // Create a DateTime object from the input date string
+        $date = new \DateTime($dateStr);
+
+        // Subtract three years from the date
+        $date->modify("-$years years");
+
+        // Format and return the result as a Y-m-d string
+        return $date->format('Y'). '-01-01';
+    }
 }
