@@ -257,35 +257,6 @@ class Dates
         // Convert the input date string to a DateTime object
         $date = new \DateTime($dateStr);
 
-        // Check if the given date is not a Friday (5 represents Friday in DateTime)
-        if ($date->format('N') != 5) {
-            return false; // Return false if it's not a Friday
-        }
-
-        // Get the day of the year for the input date
-        $dayOfYear = $date->format('z');
-
-        // Calculate the day of the year for the first Friday of the year
-        // (Assuming weeks start on Saturday, the first Friday is either on day 5 or 12)
-        $firstFridayDay = ($dayOfYear < 5) ? 5 : 12;
-
-        // Calculate the number of Fridays before or on the input date
-        $fridayNumber = floor(($dayOfYear - $firstFridayDay) / 7) + 1;
-
-        // since our weeks begin on Saturday, increment by one
-        return intval($fridayNumber + 1);
-    }
-
-    /**
-     * given a date like 2023-01-13, this function will return
-     * the number week that belongs to, such as 2.
-     * The week has been adjusted from sunday-saturday -> saturday-friday
-     */
-    public static function weekNumberLegacy(string $dateStr): int|false
-    {
-        // Convert the input date string to a DateTime object
-        $date = new \DateTime($dateStr);
-
         if ($date->format('N') != 5) {
             return false;
         }

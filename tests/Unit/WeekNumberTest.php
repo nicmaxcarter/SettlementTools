@@ -10,6 +10,48 @@ use Nicmaxcarter\SettlementTools\Dates;
 final class WeekNumberTest extends TestCase
 {
     /** @test */
+    public function CheckWeekFirstOf2021(): void
+    {
+        // given this date
+        $givenDate = '2021-01-01';
+
+        // when the function is called
+        $resultNumber = Dates::weekNumber($givenDate);
+
+        // the function should return this formatted string
+        $checkNumber = 1;
+        $this->assertEquals($checkNumber,$resultNumber);
+    }
+
+    /** @test */
+    public function CheckWeekFirstOf2020(): void
+    {
+        // given this date
+        $givenDate = '2020-01-03';
+
+        // when the function is called
+        $resultNumber = Dates::weekNumber($givenDate);
+
+        // the function should return this formatted string
+        $checkNumber = 1;
+        $this->assertEquals($checkNumber,$resultNumber);
+    }
+
+    /** @test */
+    public function CheckWeekSecondOf2020(): void
+    {
+        // given this date
+        $givenDate = '2020-01-10';
+
+        // when the function is called
+        $resultNumber = Dates::weekNumber($givenDate);
+
+        // the function should return this formatted string
+        $checkNumber = 2;
+        $this->assertEquals($checkNumber,$resultNumber);
+    }
+
+    /** @test */
     public function CheckWeekOneFriday(): void
     {
         // given this date
@@ -17,12 +59,10 @@ final class WeekNumberTest extends TestCase
 
         // when the function is called
         $resultNumber = Dates::weekNumber($givenDate);
-        $legacyResult = Dates::weekNumberLegacy($givenDate);
 
         // the function should return this formatted string
         $checkNumber = 1;
         $this->assertEquals($checkNumber,$resultNumber);
-        $this->assertEquals($checkNumber,$legacyResult);
     }
 
     /** @test */
@@ -33,12 +73,10 @@ final class WeekNumberTest extends TestCase
 
         // when the function is called
         $resultNumber = Dates::weekNumber($givenDate);
-        $legacyResult = Dates::weekNumberLegacy($givenDate);
 
         // the function should return this formatted string
         $checkNumber = 35;
         $this->assertEquals($checkNumber,$resultNumber);
-        $this->assertEquals($checkNumber,$legacyResult);
     }
 
     /** @test */
@@ -49,12 +87,10 @@ final class WeekNumberTest extends TestCase
 
         // when the function is called
         $resultNumber = Dates::weekNumber($givenDate);
-        $legacyResult = Dates::weekNumberLegacy($givenDate);
 
         // the function should return this formatted string
         $checkNumber = 28;
         $this->assertEquals($checkNumber,$resultNumber);
-        $this->assertEquals($checkNumber,$legacyResult);
     }
 
     /** @test */
@@ -65,12 +101,10 @@ final class WeekNumberTest extends TestCase
 
         // when the function is called
         $resultNumber = Dates::weekNumber($givenDate);
-        $legacyResult = Dates::weekNumberLegacy($givenDate);
 
         // the function should return this formatted string
         $checkNumber = 52;
         $this->assertEquals($checkNumber,$resultNumber);
-        $this->assertEquals($checkNumber,$legacyResult);
     }
 
     /** @test */
@@ -81,11 +115,9 @@ final class WeekNumberTest extends TestCase
 
         // when the function is called
         $resultNumber = Dates::weekNumber($givenDate);
-        $legacyResult = Dates::weekNumberLegacy($givenDate);
 
         // the function should return this formatted string
         $checkNumber = false;
         $this->assertEquals($checkNumber,$resultNumber);
-        $this->assertEquals($checkNumber,$legacyResult);
     }
 }
