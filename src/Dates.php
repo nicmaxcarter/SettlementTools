@@ -129,7 +129,7 @@ class Dates
         $dates[] = $weekEndingDate;
         $numOfWeeks--;
 
-        for($i = 0; $i < $numOfWeeks; $i++) {
+        for ($i = 0; $i < $numOfWeeks; $i++) {
             $date = new \DateTime($weekEndingDate);
             $dates[] = $date->modify('-7 days')->format('Y-m-d');
             $weekEndingDate = $date->format('Y-m-d');
@@ -152,7 +152,7 @@ class Dates
 
         $newDates = [];
 
-        foreach($dates as $weekEnd) {
+        foreach ($dates as $weekEnd) {
             $end = $weekEnd;
             $start = self::weekStart($end);
 
@@ -180,7 +180,7 @@ class Dates
 
         $newDates = [];
 
-        foreach($dates as $week) {
+        foreach ($dates as $week) {
             $start = new \DateTime($week['start']);
             $end = new \DateTime($week['end']);
 
@@ -191,5 +191,130 @@ class Dates
         }
 
         return $newDates;
+    }
+
+    /**
+     * @return array<String>
+     */
+    public static function yearsSpanned(
+        string $firstDate,
+        string $lastDate
+    ): array {
+        // Convert start and end dates to DateTime objects
+        $start = new \DateTime($firstDate);
+        $end = new \DateTime($lastDate);
+
+
+        // Initialize an empty array to store the years
+        $years = [];
+
+        if ($end < $start) {
+            return $years;
+        }
+
+        // Loop through each year and add it to the array
+        while ($start <= $end) {
+            $years[] = $start->format('Y');
+            $start->modify('+1 year');
+        }
+
+        return $years;
+    }
+
+    /**
+     * @return array<String>
+     */
+    public static function fridaysInYear(int $year): array
+    {
+        $fridays = array();
+
+        // Create a DateTime object for the first day of the year
+        $date = new \DateTime("$year-01-01");
+
+        // Loop through the year, checking each day
+        while ($date->format('Y') == $year) {
+            // Check if the current day is a Friday (5 represents Friday in DateTime)
+            if ($date->format('N') == 5) {
+                $fridays[] = $date->format('Y-m-d');
+                $date->modify('+7 days');
+                continue;
+            }
+
+            // Move to the next day
+            $date->modify('+1 day');
+        }
+
+        return $fridays;
+    }
+
+    /**
+     * given a date like 2023-01-13, this function will return
+     * the number week that belongs to, such as 2.
+     * The week has been adjusted from sunday-saturday -> saturday-friday
+     */
+    public static function weekNumber(string $dateStr): int|false
+    {
+        // Convert the input date string to a DateTime object
+        $date = new \DateTime($dateStr);
+
+        // Check if the given date is not a Friday (5 represents Friday in DateTime)
+        if ($date->format('N') != 5) {
+            return false; // Return false if it's not a Friday
+        }
+
+        // Get the day of the year for the input date
+        $dayOfYear = $date->format('z');
+
+        // Calculate the day of the year for the first Friday of the year
+        // (Assuming weeks start on Saturday, the first Friday is either on day 5 or 12)
+        $firstFridayDay = ($dayOfYear < 5) ? 5 : 12;
+
+        // Calculate the number of Fridays before or on the input date
+        $fridayNumber = floor(($dayOfYear - $firstFridayDay) / 7) + 1;
+
+        // since our weeks begin on Saturday, increment by one
+        return intval($fridayNumber + 1);
+    }
+
+    /**
+     * given a date like 2023-01-13, this function will return
+     * the number week that belongs to, such as 2.
+     * The week has been adjusted from sunday-saturday -> saturday-friday
+     */
+    public static function weekNumberLegacy(string $dateStr): int|false
+    {
+        // Convert the input date string to a DateTime object
+        $date = new \DateTime($dateStr);
+
+        if ($date->format('N') != 5) {
+            return false;
+        }
+
+        // Get the year of the input date
+        $year = $date->format('Y');
+
+        // Initialize a counter for the Friday number
+        $fridayNumber = 1;
+
+        // Create a DateTime object for the first day of the year
+        $startDate = new \DateTime("$year-01-01");
+
+        // Loop from the start of the year to the input date
+        while ($startDate <= $date) {
+            // Check if the current day is a Friday (5 represents Friday in DateTime)
+            if ($startDate->format('N') == 5) {
+                // If it's a Friday, check if it's not the same as the input date
+                if ($startDate != $date) {
+                    $fridayNumber++;
+                } else {
+                    break; // Exit the loop when we reach the input date
+                }
+            }
+
+            // Move to the next day
+            $startDate->modify('+1 day');
+        }
+
+        return $fridayNumber;
     }
 }
