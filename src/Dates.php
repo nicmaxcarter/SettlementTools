@@ -332,4 +332,33 @@ class Dates
             return $date->modify('this Friday');
         }
     }
+
+    /**
+     * given two dates, first find the corresponding weekEnding date
+     * of each, and then compare to make sure the first date is
+     * the week prior to the second date
+     * @param \DateTime $dateOne
+     * @param \DateTime $dateTwo
+     * @return bool
+     */
+    public static function ConfirmAdjacentWeeks(
+        \DateTime $dateOne,
+        \DateTime $dateTwo
+    ): bool {
+        // calculate the week ending from the first date
+        $firstWeek = self::weekEndingOfDate($dateOne);
+
+        // calculate the week ending from the second date
+        $secondWeek = self::weekEndingOfDate($dateTwo);
+
+        if(!$firstWeek || !$secondWeek)  {
+            return false;
+        }
+
+        // compare the difference between two dates
+        $diff = intval($firstWeek->diff($secondWeek)->format("%r%a"));
+
+        // if it is 7, true
+        return ($diff === 7);
+    }
 }
