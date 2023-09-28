@@ -17,7 +17,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = new \DateTime('2023-09-16');
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -33,7 +33,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = new \DateTime('2023-09-16');
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -49,7 +49,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = new \DateTime('2023-09-16');
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -65,7 +65,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = new \DateTime('2023-09-16');
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -80,7 +80,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = '2023-09-16';
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -95,7 +95,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = '2023-09-16';
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -110,7 +110,7 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = '2023-09-16';
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
@@ -125,11 +125,109 @@ final class ConfirmAdjacentWeeksTest extends TestCase
         $dateTwo = '2023-09-16';
 
         // when the function is called
-        $check = Dates::ConfirmAdjacentWeeks(
+        $check = Dates::confirmAdjacentWeeks(
             $dateOne,
             $dateTwo
         );
 
         $this->assertFalse($check);
+    }
+
+    /** @test */
+    public function twoWeekEndingsOrderedAdjacent_yymmdd_true(): void
+    {
+        $this->assertTrue(
+            Dates::confirmAdjacentWeeks(
+                '2023-03-04',
+                '2023-03-11'
+            )
+        );
+
+        $this->assertTrue(
+            Dates::confirmAdjacentWeeks(
+                '2022-9-13',
+                '2022-09-21'
+            )
+        );
+    }
+
+    /** @test */
+    public function twoWeekEndingsOrderedAdjacent_yymmdd_false(): void
+    {
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                '2023-03-11',
+                '2023-03-04'
+            )
+        );
+
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                '2023-03-11',
+                '2023-03-11'
+            )
+        );
+
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                '2022-9-05',
+                '2022-09-21'
+            )
+        );
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                '2022-09-29',
+                '2022-09-21'
+            )
+        );
+    }
+
+    /** @test */
+    public function twoWeekEndingsOrderedAdjacent_ddMyy_true(): void
+    {
+        $this->assertTrue(
+            Dates::confirmAdjacentWeeks(
+                "05-MAR-2023",
+                "13-MAR-2023"
+            )
+        );
+
+        $this->assertTrue(
+            Dates::confirmAdjacentWeeks(
+                "06-AUG-2022",
+                "14-AUG-2022"
+            )
+        );
+    }
+
+    /** @test */
+    public function twoWeekEndingsOrderedAdjacent_ddMyy_false(): void
+    {
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                "05-MAR-2023",
+                "22-MAR-2023"
+            )
+        );
+
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                "01-AUG-2022",
+                "14-AUG-2022"
+            )
+        );
+
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                "14-AUG-2022",
+                "14-AUG-2022"
+            )
+        );
+        $this->assertFalse(
+            Dates::confirmAdjacentWeeks(
+                "22-AUG-2022",
+                "14-AUG-2022"
+            )
+        );
     }
 }

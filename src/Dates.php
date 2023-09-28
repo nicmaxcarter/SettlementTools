@@ -341,7 +341,7 @@ class Dates
      * @param \DateTime $dateTwo
      * @return bool
      */
-    public static function ConfirmAdjacentWeeks(
+    public static function confirmAdjacentWeeks(
         \DateTime|string $dateOne,
         \DateTime|string $dateTwo
     ): bool {
@@ -360,5 +360,30 @@ class Dates
 
         // if it is 7, true
         return ($diff === 7);
+    }
+
+    /**
+     * given two dates, compare to make sure the first date exactly
+     * one day prior to the second date
+     * @param string $dateOne
+     * @param string $dateTwo
+     * @return bool
+     */
+    public static function confirmAdjacentDates(
+        string $dateOne,
+        string $dateTwo
+    ): bool {
+        $dateOne = new \DateTime($dateOne);
+        $dateTwo = new \DateTime($dateTwo);
+
+        // compare the difference between two dates
+        $diff = intval($dateOne->diff($dateTwo)->format("%r%a"));
+
+        // there should only be a difference of one day
+        if ($diff === 1) {
+            return true;
+        }
+
+        return false;
     }
 }
