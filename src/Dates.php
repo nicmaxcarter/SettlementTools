@@ -301,6 +301,35 @@ class Dates
         $date->modify("-$years years");
 
         // Format and return the result as a Y-m-d string
-        return $date->format('Y'). '-01-01';
+        return $date->format('Y') . '-01-01';
+    }
+
+    /**
+     * if you give this function a tuesday,
+     * it should return that friday of the same week
+     * @param \DateTime|string $date
+     * @return \DateTime|false
+     */
+    public static function weekEndingOfDate(
+        \DateTime|string $date
+    ): \DateTime|false {
+
+        if ($date instanceof \DateTime) {
+            $date = clone $date;
+        } elseif (!$date) {
+            $date = new \DateTime();
+        } else {
+            $date = new \DateTime($date);
+        }
+
+        $date->setTime(0, 0, 0);
+
+        if ($date->format('N') == 5) {
+            // If the date is already a Friday, return it as-is
+            return $date;
+        } else {
+            // Otherwise, return the date of the nearest Friday
+            return $date->modify('this Friday');
+        }
     }
 }
