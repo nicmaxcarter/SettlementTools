@@ -342,8 +342,8 @@ class Dates
      * @return bool
      */
     public static function ConfirmAdjacentWeeks(
-        \DateTime $dateOne,
-        \DateTime $dateTwo
+        \DateTime|string $dateOne,
+        \DateTime|string $dateTwo
     ): bool {
         // calculate the week ending from the first date
         $firstWeek = self::weekEndingOfDate($dateOne);

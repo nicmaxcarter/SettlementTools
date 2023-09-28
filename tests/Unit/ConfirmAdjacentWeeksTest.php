@@ -72,4 +72,64 @@ final class ConfirmAdjacentWeeksTest extends TestCase
 
         $this->assertFalse($check);
     }
+
+    /** @test */
+    public function confirmAdjacentWeeks_true_twoSaturdays_string(): void
+    {
+        $dateOne = '2023-09-09';
+        $dateTwo = '2023-09-16';
+
+        // when the function is called
+        $check = Dates::ConfirmAdjacentWeeks(
+            $dateOne,
+            $dateTwo
+        );
+
+        $this->assertTrue($check);
+    }
+
+    /** @test */
+    public function confirmAdjacentWeeks_true_notTwoSaturdays_string(): void
+    {
+        $dateOne = '2023-09-10';
+        $dateTwo = '2023-09-16';
+
+        // when the function is called
+        $check = Dates::ConfirmAdjacentWeeks(
+            $dateOne,
+            $dateTwo
+        );
+
+        $this->assertTrue($check);
+    }
+
+    /** @test */
+    public function confirmAdjacentWeeks_false_dateOneTooFarAhead_string(): void
+    {
+        $dateOne = '2023-09-08';
+        $dateTwo = '2023-09-16';
+
+        // when the function is called
+        $check = Dates::ConfirmAdjacentWeeks(
+            $dateOne,
+            $dateTwo
+        );
+
+        $this->assertFalse($check);
+    }
+
+    /** @test */
+    public function confirmAdjacentWeeks_false_dateOneComesAfter_string(): void
+    {
+        $dateOne = '2023-09-23';
+        $dateTwo = '2023-09-16';
+
+        // when the function is called
+        $check = Dates::ConfirmAdjacentWeeks(
+            $dateOne,
+            $dateTwo
+        );
+
+        $this->assertFalse($check);
+    }
 }
