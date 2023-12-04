@@ -52,17 +52,29 @@ class Dates
             $currDate = new \DateTime();
         }
 
+        var_dump($currDate->getTimezone()->timezone);
+        exit;
+
+        // if ($currDate->getTimezone()->timezone !== 'America/New_York') {
+        if ($currDate->getTimezone() !== 'America/New_York') {
+            var_dump($currDate->getTimezone());
+            exit;
+        }
+
         if (is_null($lastFriday)) {
             // last friday date time
             $lastFriday = clone $currDate;
             $lastFriday->modify('last friday');
         }
 
-        // get difference between the two dates
-        $diff = date_diff($currDate, $lastFriday)->days;
+        // always set this to 9:01 pm so that we can be sure that anything
+        // less than 4 will revert to the prior week
+        $lastFriday->setTime(21,1,0,0);
 
-        // if the diff is less than 5 (as in, before wednesday)
-        if ($diff < 5) {
+        $diff = date_diff($lastFriday, $currDate)->days;
+
+        // if the diff is less than 4 (as in, before 9:01pm on Tuesday)
+        if ($diff < 4) {
             // go back to the prior friday
             $lastFriday->modify('-7 days');
         }

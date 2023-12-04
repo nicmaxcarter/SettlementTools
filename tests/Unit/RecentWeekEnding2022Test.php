@@ -7,7 +7,7 @@ namespace App;
 use PHPUnit\Framework\TestCase;
 use Nicmaxcarter\SettlementTools\Dates;
 
-final class RecentWeekEndingTest extends TestCase
+final class RecentWeekEnding2022Test extends TestCase
 {
     /** @test */
     public function recentWeekEndingBeforeWednesday(): void
