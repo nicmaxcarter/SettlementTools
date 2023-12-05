@@ -11,6 +11,7 @@ class Dates
         int $weeks,
         \DateTime $currentDate = null
     ): array {
+
         if (is_null($currentDate)) {
             $currentDate = new \DateTime();
         }
@@ -47,29 +48,34 @@ class Dates
         \DateTime $currDate = null,
         \DateTime $lastFriday = null
     ): string {
+
         if (is_null($currDate)) {
             // current date time
             $currDate = new \DateTime();
         }
 
-        var_dump($currDate->getTimezone()->timezone);
-        exit;
-
-        // if ($currDate->getTimezone()->timezone !== 'America/New_York') {
-        if ($currDate->getTimezone() !== 'America/New_York') {
-            var_dump($currDate->getTimezone());
-            exit;
+        // if the time zone is not EST
+        if (self::notESTTime($currDate)) {
+            // set the time zone to New York / EST
+            $currDate->setTimezone(
+                new \DateTimeZone("America/New_York")
+            );
         }
 
         if (is_null($lastFriday)) {
             // last friday date time
             $lastFriday = clone $currDate;
             $lastFriday->modify('last friday');
+        } else {
+            // set the time zone to New York / EST
+            $lastFriday->setTimezone(
+                new \DateTimeZone("America/New_York")
+            );
         }
 
         // always set this to 9:01 pm so that we can be sure that anything
         // less than 4 will revert to the prior week
-        $lastFriday->setTime(21,1,0,0);
+        $lastFriday->setTime(21, 1, 0, 0);
 
         $diff = date_diff($lastFriday, $currDate)->days;
 
@@ -363,7 +369,7 @@ class Dates
         // calculate the week ending from the second date
         $secondWeek = self::weekEndingOfDate($dateTwo);
 
-        if(!$firstWeek || !$secondWeek)  {
+        if (!$firstWeek || !$secondWeek) {
             return false;
         }
 
@@ -393,6 +399,17 @@ class Dates
 
         // there should only be a difference of one day
         if ($diff === 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function notESTTime(\DateTime $date): bool
+    {
+        $zone = $date->getTimezone()->getName();
+
+        if ($zone !== 'America/New_York') {
             return true;
         }
 

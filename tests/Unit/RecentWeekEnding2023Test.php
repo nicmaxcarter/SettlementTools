@@ -14,7 +14,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(21,1,0,1234);
+        $currDate->setTime(21, 1, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -30,7 +30,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(21,0,0,1234);
+        $currDate->setTime(21, 0, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -46,7 +46,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(22,0,0,0);
+        $currDate->setTime(22, 0, 0, 0);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -62,7 +62,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(20,0,0,1234);
+        $currDate->setTime(20, 0, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -78,7 +78,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-27', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(20,0,0,1234);
+        $currDate->setTime(20, 0, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -94,7 +94,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-25', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(20,0,0,1234);
+        $currDate->setTime(20, 0, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -110,7 +110,7 @@ final class RecentWeekEnding2023Test extends TestCase
     {
         // given this date that is BEFORE Wednesday
         $currDate = new \DateTime('2023-11-29', new \DateTimeZone("America/New_York"));
-        $currDate->setTime(3,0,0,1234);
+        $currDate->setTime(3, 0, 0, 1234);
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -122,16 +122,37 @@ final class RecentWeekEnding2023Test extends TestCase
     }
 
     /** @test */
-    public function recentWeekEndingCheckTimezone(): void
+    public function recentWeekEndingCheckTimezoneBefore9pmAfterConversion(): void
     {
-        // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-29');
-        $currDate->setTime(3,0,0,1234);
+        // given this date that is a Tuesday at 9pm, but UTC time
+        $currDate = new \DateTime('2023-11-28');
+        $currDate->setTime(21, 2, 0, 1234);
 
         // when the function is called
+        // it should convert the time to EST
         $resultDate = Dates::recentWeekEnding($currDate);
 
         // the function should return this date
+        // and after the timezone conversion, we should receive
+        // two weeks back since it is not technically past 9pm
+        $checkDate = date('Y-m-d', strtotime('2023-11-17'));
+
+        $this->assertSame($checkDate, $resultDate);
+    }
+
+    /** @test */
+    public function recentWeekEndingCheckTimezoneAfter9pmAfterConversion(): void
+    {
+        // given this date that is a Wednesday at 3am, but UTC time
+        $currDate = new \DateTime('2023-11-29');
+        $currDate->setTime(3, 2, 0, 1234);
+
+        // when the function is called
+        // it should convert the time to EST
+        $resultDate = Dates::recentWeekEnding($currDate);
+
+        // the function should return this date
+        // we should still get 11-24, unlike the function above
         $checkDate = date('Y-m-d', strtotime('2023-11-24'));
 
         $this->assertSame($checkDate, $resultDate);
