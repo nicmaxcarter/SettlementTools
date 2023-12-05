@@ -13,10 +13,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingAfter901pmOnTuesday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-28', Dates::EST());
         $currDate->setTime(21, 1, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -31,10 +31,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingBefore901pmOnTuesday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-28', Dates::EST());
         $currDate->setTime(21, 0, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -49,10 +49,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingAfter1001pmOnTuesday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-28', Dates::EST());
         $currDate->setTime(22, 0, 0, 0);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -67,10 +67,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingBefore801pmOnTuesday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-28', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-28', Dates::EST());
         $currDate->setTime(20, 0, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -85,10 +85,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingMonday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-27', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-27', Dates::EST());
         $currDate->setTime(20, 0, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -103,10 +103,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingSaturday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-25', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-25', Dates::EST());
         $currDate->setTime(20, 0, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -121,10 +121,10 @@ final class RecentWeekEnding2023Test extends TestCase
     public function recentWeekEndingWednesday(): void
     {
         // given this date that is BEFORE Wednesday
-        $currDate = new \DateTime('2023-11-29', new \DateTimeZone("America/New_York"));
+        $currDate = new \DateTime('2023-11-29', Dates::EST());
         $currDate->setTime(3, 0, 0, 1234);
         // set the timezone back to UTC to simulate the server
-        $currDate->setTimezone( new \DateTimeZone("UTC"));
+        $currDate->setTimezone(Dates::UTC());
 
         // when the function is called
         $resultDate = Dates::recentWeekEnding($currDate);
@@ -148,7 +148,7 @@ final class RecentWeekEnding2023Test extends TestCase
 
         // the function should return this date
         // and after the timezone conversion, our time will be 4pm EST
-        // and we should receive two weeks back 
+        // and we should receive two weeks back
         // since it is not technically past 9pm
         $checkDate = date('Y-m-d', strtotime('2023-11-17'));
 

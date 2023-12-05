@@ -5,46 +5,6 @@ namespace Nicmaxcarter\SettlementTools;
 class Dates
 {
     /**
-     * @return array<Mixed>
-     */
-    public static function datesForWeekEnding(
-        int $weeks,
-        \DateTime $currentDate = null
-    ): array {
-
-        if (is_null($currentDate)) {
-            $currentDate = new \DateTime();
-        }
-
-        // set empty array to house dates
-        $weekEndings = [];
-
-        $recentWeekEnding = false;
-
-        for ($i = 0; $i < $weeks; $i++) {
-            // the first iteration will fetch the most recent date
-            if (!$recentWeekEnding) {
-                $recentWeekEnding = self::recentWeekEnding($currentDate);
-                $weekEndings[$i] = $recentWeekEnding;
-                continue;
-            }
-
-            $time = strtotime($recentWeekEnding);
-
-            if (!$time) {
-                continue;
-            }
-
-            $date = strtotime('-7 days', $time);
-            $recentWeekEnding = date('Y-m-d', $date);
-
-            $weekEndings[$i] = $recentWeekEnding;
-        }
-
-        return $weekEndings;
-    }
-
-    /**
      * @param \DateTime $currDate
      * @param \DateTime $lastFriday
      * @return string
@@ -88,6 +48,46 @@ class Dates
         }
 
         return $lastFriday->format('Y-m-d');
+    }
+
+    /**
+     * @return array<Mixed>
+     */
+    public static function datesForWeekEnding(
+        int $weeks,
+        \DateTime $currentDate = null
+    ): array {
+
+        if (is_null($currentDate)) {
+            $currentDate = new \DateTime();
+        }
+
+        // set empty array to house dates
+        $weekEndings = [];
+
+        $recentWeekEnding = false;
+
+        for ($i = 0; $i < $weeks; $i++) {
+            // the first iteration will fetch the most recent date
+            if (!$recentWeekEnding) {
+                $recentWeekEnding = self::recentWeekEnding($currentDate);
+                $weekEndings[$i] = $recentWeekEnding;
+                continue;
+            }
+
+            $time = strtotime($recentWeekEnding);
+
+            if (!$time) {
+                continue;
+            }
+
+            $date = strtotime('-7 days', $time);
+            $recentWeekEnding = date('Y-m-d', $date);
+
+            $weekEndings[$i] = $recentWeekEnding;
+        }
+
+        return $weekEndings;
     }
 
     // when supplied with Y-m-d or Y/m/d
@@ -424,5 +424,13 @@ class Dates
     public static function EST(): \DateTimeZone
     {
         return new \DateTimeZone("America/New_York");
+    }
+
+    /**
+     * @return \DateTimeZone
+     */
+    public static function UTC(): \DateTimeZone
+    {
+        return new \DateTimeZone("UTC");
     }
 }
