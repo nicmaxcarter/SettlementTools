@@ -44,6 +44,11 @@ class Dates
         return $weekEndings;
     }
 
+    /**
+     * @param \DateTime $currDate
+     * @param \DateTime $lastFriday
+     * @return string
+     */
     public static function recentWeekEnding(
         \DateTime $currDate = null,
         \DateTime $lastFriday = null
@@ -57,9 +62,7 @@ class Dates
         // if the time zone is not EST
         if (self::notESTTime($currDate)) {
             // set the time zone to New York / EST
-            $currDate->setTimezone(
-                new \DateTimeZone("America/New_York")
-            );
+            $currDate->setTimezone(self::EST());
         }
 
         if (is_null($lastFriday)) {
@@ -68,12 +71,11 @@ class Dates
             $lastFriday->modify('last friday');
         } else {
             // set the time zone to New York / EST
-            $lastFriday->setTimezone(
-                new \DateTimeZone("America/New_York")
-            );
+            $lastFriday->setTimezone(self::EST());
         }
 
-        // always set this to 9:01 pm so that we can be sure that anything
+        // always set this to 9:01 pm so
+        // that we can be sure that anything
         // less than 4 will revert to the prior week
         $lastFriday->setTime(21, 1, 0, 0);
 
@@ -405,14 +407,22 @@ class Dates
         return false;
     }
 
+    /**
+     * @param \DateTime $date
+     * @return bool
+     */
     public static function notESTTime(\DateTime $date): bool
     {
         $zone = $date->getTimezone()->getName();
 
-        if ($zone !== 'America/New_York') {
-            return true;
-        }
+        return ($zone !== 'America/New_York');
+    }
 
-        return false;
+    /**
+     * @return \DateTimeZone
+     */
+    public static function EST(): \DateTimeZone
+    {
+        return new \DateTimeZone("America/New_York");
     }
 }
